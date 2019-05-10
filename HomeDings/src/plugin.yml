@@ -1,0 +1,11 @@
+name: SecretHome
+version: 4.20
+author: M4rk4yy
+main: de.m4rk4yy.SecretHome.Main
+api-version: 1.13
+commands: 
+  home:
+  sethome:
+  delhome:
+  homelist:
+  
