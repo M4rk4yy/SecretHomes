@@ -42,7 +42,7 @@ public class Sethome implements CommandExecutor {
 			float yaw = loc.getYaw();
 			float pitch = loc.getPitch();
 
-			mm.writeToFile(p.getUniqueId(), "home", w, x, y, z, yaw, pitch);
+			mm.writeToFile(p.getUniqueId(), "Home", w, x, y, z, yaw, pitch);
 			p.sendMessage(mm.getPrefix() + "Home wurde gesetzt.");
 			return true;
 		}
