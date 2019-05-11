@@ -13,7 +13,7 @@ public class Delhome implements CommandExecutor {
 	public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 		Player p = (Player) cs;
 		if(args.length == 0) {
-			if(mm.deleteHome(p.getUniqueId(), "home")) {
+			if(mm.deleteHome(p.getUniqueId(), "Home")) {
 				p.sendMessage(mm.getPrefix() + "Dein Home wurde gelöscht.");
 				return true;
 			} else {
