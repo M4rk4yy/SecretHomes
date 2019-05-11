@@ -27,12 +27,12 @@ public class Home implements CommandExecutor {
 
 		if (args.length == 0) {
 
-			if (!mm.nameExists(p.getUniqueId(), "home")) {
+			if (!mm.nameExists(p.getUniqueId(), "Home")) {
 				p.sendMessage(mm.getErrorPrefix() + "Du hast kein Home gesetzt.");
 				return true;
 			}
 
-			String[] list = mm.getFromFile(p.getUniqueId(), "home");
+			String[] list = mm.getFromFile(p.getUniqueId(), "Home");
 
 			World w = Bukkit.getServer().getWorld(list[0]);
 			double x = Double.parseDouble(list[1]);
@@ -82,14 +82,14 @@ public class Home implements CommandExecutor {
 		}
 
 		if (args.length == 1 && args[0].equalsIgnoreCase("-f")) {
-			//mm.writeToFileUnsaveTP(p.getUniqueId(), "home");
+			mm.writeToFileUnsaveTP(p.getUniqueId(), "Home");
 			teleportHome(p);
 			return true;
 		}
 
 		if (args.length == 2 && args[1].equalsIgnoreCase("-f")) {
 			String homename = args[0].substring(0, 1).toUpperCase() + args[0].substring(1).toLowerCase();
-			//mm.writeToFileUnsaveTP(p.getUniqueId(), homename);
+			mm.writeToFileUnsaveTP(p.getUniqueId(), homename);
 			teleportHome(p, homename);
 			return true;
 		}
@@ -100,13 +100,13 @@ public class Home implements CommandExecutor {
 
 	public void writeUnsaveMessage(Player p) {
 		p.sendMessage("§4WARNUNG: §cDein Home wurde vom Plugin als unsicher eingestuft. "
-				+ "Dies passiert, wenn sich Lava, Druckplatten oder Ähnliches sich den Homepunkt befinden. "
+				+ "Dies passiert, wenn sich Lava, Druckplatten oder Ähnliches um den Homepunkt befinden. "
 				+ "Wenn du dir sicher bist, dass das Home sicher ist, klicke unten auf den Link. "
 				+ "Solltest du trotz dieser Warnung dich teleportieren und Sterben werden wir keine "
 				+ "Gegenstände oder Ähnliches ersetzen.");
 		p.sendMessage("");
 		
-		TextComponent msg = new TextComponent("§4§nTROTZDEM TELEPORTIEREN");
+		TextComponent msg = new TextComponent("§4§lTROTZDEM TELEPORTIEREN");
 		
 		msg.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/home -f"));
 		msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT
@@ -119,13 +119,13 @@ public class Home implements CommandExecutor {
 	
 	public void writeUnsaveMessage(Player p, String homename) {
 		p.sendMessage("§4WARNUNG: §cDein Home wurde vom Plugin als unsicher eingestuft. "
-				+ "Dies passiert, wenn sich Lava, Druckplatten oder Ähnliches sich um den Homepunkt befinden. "
+				+ "Dies passiert, wenn sich Lava, Druckplatten oder Ähnliches um den Homepunkt befinden. "
 				+ "Wenn du dir sicher bist, dass das Home sicher ist, klicke unten auf den Text. "
 				+ "Solltest du trotz dieser Warnung dich teleportieren und Sterben werden wir keine "
 				+ "Gegenstände oder Ähnliches ersetzen.");
 		p.sendMessage("");
 		
-		TextComponent msg = new TextComponent("§4§nTROTZDEM TELEPORTIEREN");
+		TextComponent msg = new TextComponent("§4§lTROTZDEM TELEPORTIEREN");
 		
 		msg.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/home " + homename + " -f"));
 		msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT
@@ -137,7 +137,7 @@ public class Home implements CommandExecutor {
 
 	public void teleportHome(Player p) {
 
-		String[] list = mm.getFromFile(p.getUniqueId(), "home");
+		String[] list = mm.getFromFile(p.getUniqueId(), "Home");
 
 		World w = Bukkit.getServer().getWorld(list[0]);
 		double x = Double.parseDouble(list[1]);
