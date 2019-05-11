@@ -202,7 +202,7 @@ public class MethodManager {
 	
 	public void writeToFileUnsaveTP(UUID uuid, String homename) {
 		String uid = uuid.toString();
-		File file = new File("plugins//SecretHomes", "UnsafeTPs");
+		File file = new File("plugins//SecretHomes", ".UnsafeTPs");
 		YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
 		if (!file.exists()) {
@@ -214,27 +214,20 @@ public class MethodManager {
 		
 		Timestamp stamp = new Timestamp(System.currentTimeMillis());
 		Date date = new Date(stamp.getTime());
-		SimpleDateFormat dt = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+		SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		
 		String formatted = dt.format(date);
 		
 		String[] homedata = this.getFromFile(uuid, homename);
 		
-		String[] write = {
-			Bukkit.getPlayer(uuid).getName(),
-			formatted,
-			homename,
-			homedata[0],
-			homedata[1],
-			homedata[2],
-			homedata[3],
-			homedata[4],
-			homedata[5]
-			
-		};
-
-		cfg.set(uuid.toString(), write);
-
+		cfg.set("[" + formatted + "]", uuid + " (" 
+				+ Bukkit.getPlayer(uuid).getName() 
+				+ ") " + "unsafe zu " 
+				+ homename + ";" 
+				+ homedata[0] + ";" 
+				+ homedata[1] + ";" 
+				+ homedata[2] + ";"
+				+ homedata[3] + ";");
 		try {
 			cfg.save(file);
 		} catch (IOException e) {
