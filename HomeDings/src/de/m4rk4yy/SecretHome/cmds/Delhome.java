@@ -23,7 +23,7 @@ public class Delhome implements CommandExecutor {
 		}
 		
 		if(args.length == 1) {
-			String homename = args[0].substring(0,1).toUpperCase() + args[0].substring(1);
+			String homename = args[0].toLowerCase();
 
 			if(mm.deleteHome(p.getUniqueId(), homename)) {
 				p.sendMessage(mm.getPrefix() + "Dein Home " + homename + " wurde gelöscht.");

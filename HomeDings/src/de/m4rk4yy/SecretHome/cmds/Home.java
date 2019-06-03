@@ -54,7 +54,7 @@ public class Home implements CommandExecutor {
 		}
 
 		if (args.length == 1 && !args[0].equalsIgnoreCase("-f")) {
-			String homename = args[0].substring(0, 1).toUpperCase() + args[0].substring(1).toLowerCase();
+			String homename = args[0].toLowerCase();
 			String[] list = mm.getFromFile(p.getUniqueId(), homename);
 
 			if (!mm.nameExists(p.getUniqueId(), homename)) {
@@ -88,7 +88,7 @@ public class Home implements CommandExecutor {
 		}
 
 		if (args.length == 2 && args[1].equalsIgnoreCase("-f")) {
-			String homename = args[0].substring(0, 1).toUpperCase() + args[0].substring(1).toLowerCase();
+			String homename = args[0].toLowerCase();
 			mm.writeToFileUnsaveTP(p.getUniqueId(), homename);
 			teleportHome(p, homename);
 			return true;

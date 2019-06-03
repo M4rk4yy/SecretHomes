@@ -32,7 +32,7 @@ public class Homes implements CommandExecutor{
 			
 			for (String s : list) {
 			
-				String homename = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+				String homename = s.toLowerCase();
 				TextComponent prefix = new TextComponent(mm.getPrefix());
 				TextComponent msg = new TextComponent(s);
 				

@@ -26,6 +26,8 @@ public class Sethome implements CommandExecutor {
 			allowedHomes = 8;
 		if (p.hasPermission("cmi.command.sethome.10") && !p.isOp() && !p.hasPermission("*"))
 			allowedHomes = 10;
+		if(p.hasPermission("*") || p.isOp())
+			allowedHomes = 1000000;
 
 		if (allowedHomes - countOfHomes == 0) {
 			p.sendMessage(mm.getErrorPrefix() + "Maximale Anzahl an Homes erreicht.");
@@ -48,7 +50,7 @@ public class Sethome implements CommandExecutor {
 		}
 
 		if (args.length == 1 && !args[0].contains("-")) {
-			String homename = args[0].substring(0, 1).toUpperCase() + args[0].substring(1).toLowerCase();
+			String homename = args[0].toLowerCase();
 			Location loc = p.getLocation();
 
 			World w = loc.getWorld();
