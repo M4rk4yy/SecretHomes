@@ -2,6 +2,7 @@ package de.m4rk4yy.SecretHome.cmds;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,6 +21,7 @@ public class Home implements CommandExecutor {
 
 	MethodManager mm = new MethodManager();
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
@@ -53,7 +55,7 @@ public class Home implements CommandExecutor {
 			return true;
 		}
 
-		if (args.length == 1 && !args[0].equalsIgnoreCase("-f")) {
+		if (args.length == 1 && !args[0].equalsIgnoreCase("-f") && !args[0].equalsIgnoreCase("-o")) {
 			String homename = args[0].toLowerCase();
 			String[] list = mm.getFromFile(p.getUniqueId(), homename);
 
@@ -92,6 +94,44 @@ public class Home implements CommandExecutor {
 			mm.writeToFileUnsaveTP(p.getUniqueId(), homename);
 			teleportHome(p, homename);
 			return true;
+		}
+		
+		
+		if (args.length == 2 && args[0].equalsIgnoreCase("-o") ) {
+			OfflinePlayer t = Bukkit.getOfflinePlayer(args[1]);
+			if(t == null) {
+				p.sendMessage("Der Spieler existiert nicht");
+				return true;
+			}
+			
+			if(!isPermitted(p)) {
+				p.sendMessage(mm.getErrorPrefix() + "Keine Permission");
+				return true;
+			}
+			
+			teleportHome(t, p);
+			return true;
+			
+			
+		}
+		
+		if (args.length == 3 && args[0].equalsIgnoreCase("-o") ) {
+			OfflinePlayer t = Bukkit.getOfflinePlayer(args[1]);
+			String homename = args[2].toLowerCase();
+			if(t == null) {
+				p.sendMessage(mm.getErrorPrefix() + "Der Spieler existiert nicht");
+				return true;
+			}
+			
+			if(!isPermitted(p)) {
+				p.sendMessage(mm.getErrorPrefix() + "Keine Permission");
+				return true;
+			}
+			
+			teleportHome(t, p, homename);
+			return true;
+			
+			
 		}
 
 		return true;
@@ -152,9 +192,27 @@ public class Home implements CommandExecutor {
 		p.sendMessage(mm.getPrefix() + "Du wurdest zum Home teleportiert.");
 
 	}
+	
+	public void teleportHome(OfflinePlayer baseHome, Player p) {
+		
+		String[] list = mm.getFromFile(baseHome.getUniqueId(), "Home");
+
+		World w = Bukkit.getServer().getWorld(list[0]);
+		double x = Double.parseDouble(list[1]);
+		double y = Double.parseDouble(list[2]);
+		double z = Double.parseDouble(list[3]);
+		float yaw = Float.parseFloat(list[4]);
+		float pitch = Float.parseFloat(list[5]);
+
+		Location loc = new Location(w, x, y, z, yaw, pitch);
+
+		p.teleport(loc);
+		p.sendMessage(mm.getPrefix() + "Du wurdest zum Home von " + baseHome.getName() + " teleportiert.");
+
+	}
 
 	public void teleportHome(Player p, String homename) {
-
+		
 		String[] list = mm.getFromFile(p.getUniqueId(), homename);
 
 		World w = Bukkit.getServer().getWorld(list[0]);
@@ -169,6 +227,30 @@ public class Home implements CommandExecutor {
 		p.teleport(loc);
 		p.sendMessage(mm.getPrefix() + "Du wurdest zum Home " + homename + " teleportiert.");
 
+	}
+	
+	public void teleportHome(OfflinePlayer baseHome, Player t, String homename) {
+		String[] list = mm.getFromFile(baseHome.getUniqueId(), homename);
+
+		World w = Bukkit.getServer().getWorld(list[0]);
+		double x = Double.parseDouble(list[1]);
+		double y = Double.parseDouble(list[2]);
+		double z = Double.parseDouble(list[3]);
+		float yaw = Float.parseFloat(list[4]);
+		float pitch = Float.parseFloat(list[5]);
+
+		Location loc = new Location(w, x, y, z, yaw, pitch);
+
+		t.teleport(loc);
+		t.sendMessage(mm.getPrefix() + "Du wurdest zum Home " + homename + " von " + baseHome.getName() + " teleportiert.");
+
+	}
+	
+	public boolean isPermitted(Player p) {
+		if(!p.hasPermission("secretcraft.homes.other") && !p.isOp() && !p.hasPermission("*")) {
+			return false;
+		}
+		return true;
 	}
 
 }

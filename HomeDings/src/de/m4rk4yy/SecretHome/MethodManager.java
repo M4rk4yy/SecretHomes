@@ -30,11 +30,10 @@ public class MethodManager {
 		mats.add(Material.FIRE);
 		mats.add(Material.CACTUS);
 		mats.add(Material.TRIPWIRE);
-		
 
 		for (int i = 0; i < blocksAround.size(); i++) {
 			Material m = blocksAround.get(i);
-			
+
 			for (Material mat : mats) {
 				if (m == mat) {
 					isNotSafe = true;
@@ -52,18 +51,19 @@ public class MethodManager {
 
 		Material legs = loc.getWorld().getBlockAt(loc).getType();
 		Material head = loc.getWorld().getBlockAt((int) loc.getX(), (int) loc.getY() + 1, (int) loc.getZ()).getType();
-
+		Material headTop = loc.getWorld().getBlockAt((int) loc.getX(), (int) loc.getY() - 1, (int) loc.getZ())
+				.getType();
 		if (blocksunder[0] == Material.CHEST) {
 			isNotSafe = true;
 		}
-		
+
 		boolean blockUnderisSafe = false;
 		int dangerCounter = 0;
 		for (int i = 0; i < blocksunder.length; i++) {
 
 			if (mats.contains(blocksunder[i])) {
 				blockUnderisSafe = true;
-				
+
 			}
 
 			if (blocksunder[i] == Material.AIR) {
@@ -71,14 +71,17 @@ public class MethodManager {
 			}
 
 		}
-		
+
 		if (blockUnderisSafe || dangerCounter > 3)
 			isNotSafe = true;
 
-		if (legs.isSolid() || head.isSolid()) {
+		
+		if (head.isSolid() || headTop.isSolid() && Math.round(loc.getY()) == loc.getY() && !head.isBlock())
+			isNotSafe = true;
+
+		if (legs.isSolid() && Math.round(loc.getY()) == loc.getY()) {
 			isNotSafe = true;
 		}
-
 		return isNotSafe;
 	}
 
@@ -150,6 +153,17 @@ public class MethodManager {
 			return false;
 	}
 	
+	public boolean userExists(UUID uuid) {
+		String uid = uuid.toString();
+		File file = new File("plugins//SecretHomes", uid);
+		
+		if(!file.exists()) {
+			return false;
+		}
+		
+		return true;
+	}
+
 	public int homeCount(UUID uuid) {
 		String uid = uuid.toString();
 		File file = new File("plugins//SecretHomes", uid);
@@ -199,7 +213,7 @@ public class MethodManager {
 
 		}
 	}
-	
+
 	public void writeToFileUnsaveTP(UUID uuid, String homename) {
 		String uid = uuid.toString();
 		File file = new File("plugins//SecretHomes", ".UnsafeTPs");
@@ -211,23 +225,17 @@ public class MethodManager {
 			} catch (IOException e) {
 			}
 		}
-		
+
 		Timestamp stamp = new Timestamp(System.currentTimeMillis());
 		Date date = new Date(stamp.getTime());
 		SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		
+
 		String formatted = dt.format(date);
-		
+
 		String[] homedata = this.getFromFile(uuid, homename);
-		
-		cfg.set("[" + formatted + "]", uuid + " (" 
-				+ Bukkit.getPlayer(uuid).getName() 
-				+ ") " + "unsafe zu " 
-				+ homename + ";" 
-				+ homedata[0] + ";" 
-				+ homedata[1] + ";" 
-				+ homedata[2] + ";"
-				+ homedata[3] + ";");
+
+		cfg.set("[" + formatted + "]", uuid + " (" + Bukkit.getPlayer(uuid).getName() + ") " + "unsafe zu " + homename
+				+ ";" + homedata[0] + ";" + homedata[1] + ";" + homedata[2] + ";" + homedata[3] + ";");
 		try {
 			cfg.save(file);
 		} catch (IOException e) {

@@ -18,7 +18,7 @@ public class Sethome implements CommandExecutor {
 
 		Player p = (Player) cs;
 		int countOfHomes = mm.homeCount(p.getUniqueId());
-		int allowedHomes = 0;
+		int allowedHomes = 2;
 
 		if (p.hasPermission("cmi.command.sethome.2") && !p.isOp() && !p.hasPermission("*"))
 			allowedHomes = 2;
@@ -73,6 +73,7 @@ public class Sethome implements CommandExecutor {
 
 		if (args.length > 1) {
 			p.sendMessage(mm.getErrorPrefix() + "Syntax: /sethome [Name]");
+			p.sendMessage(mm.getErrorPrefix() + "Hinweis: Homenames dürfen kein Minus (-) beinhalten");
 			return true;
 		}
 		return true;
